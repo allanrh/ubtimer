@@ -1,0 +1,47 @@
+#timer {
+  color: white;
+  background-color: black;
+  height: 100vh;
+}
+
+.logo {
+  max-height: 100px;
+  margin: 10px;
+}
+
+h1 {
+  font-family: ViperNora;
+  font-size: 300% !important;
+  margin: 10px;
+}
+
+.timer {
+  margin-top: 50px;
+  line-height: 1;
+  font-family: ViperNora;
+  font-size: 25vw;
+
+  .prep {
+    color: darkorange;
+  }
+
+  .elapsed {
+    .round {
+      color: darkorange;
+    }
+    .counter {}
+    .interval {
+      // font-size: 20vw;
+    }
+    .rest {
+      color: darkorange;
+    }
+    .done {
+      color: #777;
+    }
+  }
+}
+
+.action-buttons button {
+  margin: 5px;
+}

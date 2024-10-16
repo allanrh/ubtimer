@@ -1,0 +1,35 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Laji</th>
+      <th scope="col">Logo</th>
+      <th scope="col">Timer type</th>
+      <th scope="col">T-minus</th>
+      <th scope="col">Time</th>
+      <th *ngIf="false" scope="col">Rounds</th>
+      <th scope="col">Work</th>
+      <th scope="col">Rest</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let timer of timers; index as i;">
+      <th scope="row">{{timer.id}}</th>
+      <td><a class="button" routerLink="/timer/{{timer.id}}">{{timer.name}}</a></td>
+      <td>{{timer.logo}}</td>
+      <td>{{timer.type}}</td>
+      <td>{{timer.prep}} sec</td>
+      <td>
+        <span *ngIf="timer.time">{{timer.time|secc}}</span>
+        <span *ngIf="timer.times">
+          <span *ngFor="let t of timer.times; last as isLast;">
+            {{t|secc}}<span *ngIf="!isLast">, </span>
+          </span>
+        </span>
+      </td>
+      <td *ngIf="false"><span *ngIf="timer.rounds">{{timer.rounds}}</span></td>
+      <td><span *ngIf="timer.work">{{timer.work|secc}}</span></td>
+      <td><span *ngIf="timer.rest">{{timer.rest|secc}}</span></td>
+    </tr>
+  </tbody>
+</table>

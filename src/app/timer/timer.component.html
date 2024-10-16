@@ -1,0 +1,45 @@
+<div id="timer">
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col d-flex">
+        <a routerLink="/"><img class="logo" src="images/ub-logo.png"/></a>
+        <h1 class="mx-auto">{{timer.name}}</h1>
+        <img class="logo" src="images/ub-logo.png"/>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <div class="row">
+      <div class="col d-flex justify-content-center">
+
+        <div class="timer">
+          <div *ngIf="!running && !paused && !done">
+            <span class="prep">{{prep}}</span>
+          </div>
+          <div class="elapsed" *ngIf="running || paused || done">
+            <span [ngClass]="getTypeClass()"><span *ngIf="false && round" class="round">{{round}}&nbsp;</span>{{elapsed|secc}}</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col d-flex justify-content-center">
+        <div class="action-buttons">
+          {{state}}, p={{prep}}, r={{round}}, m={{multiIndex}}, e={{elapsed}}
+          <button type="button" class="btn btn-primary" *ngIf="init" (click)="start()">START</button>
+          <button type="button" class="btn btn-warning" *ngIf="false && running" (click)="pause()">PAUSE</button>
+          <button type="button" class="btn btn-primary" *ngIf="paused" (click)="continue()">CONTINUE</button>
+          <button type="button" class="btn btn-primary" *ngIf="done" (click)="reset()">RESET</button>
+          <button type="button" class="btn btn-danger"  *ngIf="prepping || running || paused" (click)="stop()">STOP</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
