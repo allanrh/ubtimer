@@ -4,7 +4,13 @@
   height: 100vh;
 }
 
-.logo {
+h1.heading {
+  line-height: 2;
+}
+
+.logo, .sponsor-logo {
+  object-fit: contain;
+  max-width: 20vw;
   max-height: 100px;
   margin: 10px;
 }
@@ -44,4 +50,9 @@ h1 {
 
 .action-buttons button {
   margin: 5px;
+}
+
+.debug {
+  color: #333;
+  font-size: 75%;
 }
