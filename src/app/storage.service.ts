@@ -29,10 +29,12 @@ Kello:Tää on vähän hankalampi. Tarvis sellaisen joka on päällä ylöspäin
 
   getTimers(): any[] {
     return [
-      { id: 3, name: 'KORKKARIT KATTOON', type: 'stopwatch',    sponsor: 'BOXATHLETICS', logo: 'images/ba-logo.png', prep: 10, time: 720 },
-      { id: 4, name: 'JATKOTIKKAAT',      type: 'interval',     sponsor: 'ROCK TAPE',    logo: 'images/rt-logo.png', prep: 10, work: 30, rest: 15 },
-      { id: 5, name: 'LIIAN HAPOKASTA',   type: 'stopwatch',    sponsor: 'GARMIN',       logo: 'images/g-logo.png', prep: 10, time: 360 },
-      { id: 6, name: 'TOIS PUOL YOKE', type: 'stopwatch-multi', sponsor: 'VELITES',      logo: 'images/v-logo.png', prep: 10, times: [ 180, 120, 420 ] },
+      { id: 3, name: 'KORKKARIT KATTOON', type: 'stopwatch',    sponsor: 'BOXATHLETICS', logo: 'images/ba-logo.png', prep: 0, time: 720 },
+      { id: 4, name: 'JATKOTIKKAAT',      type: 'interval',     sponsor: 'ROCK TAPE',    logo: 'images/rt-logo.png', prep: 0, work: 30, rest: 15 },
+      { id: 5, name: 'LIIAN HAPOKASTA',   type: 'stopwatch',    sponsor: 'GARMIN',       logo: 'images/g-logo.png', prep: 0, time: 360 },
+      { id: 6, name: 'TOIS PUOL YOKE', type: 'stopwatch-multi', sponsor: 'VELITES',      logo: 'images/v-logo.png', prep: 0, times: [ 180, 120, 420 ] },
+      
+      // { id: 7, name: 'TEST', type: 'stopwatch-multi', sponsor: 'VELITES',      logo: 'images/v-logo.png', prep: 0, times: [ 5, 5, 7 ] },
     ];
   }
 

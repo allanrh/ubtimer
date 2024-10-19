@@ -16,14 +16,20 @@
       <div class="col d-flex justify-content-center">
 
         <div class="timer">
-          <div *ngIf="!running && !paused && !done">
+          <div *ngIf="false && !running && !paused && !done">
             <span class="prep">{{prep}}</span>
           </div>
-          <div class="elapsed" *ngIf="running || paused || done">
+          <div class="elapsed" *ngIf="init || prep || running || paused || done">
             <span [ngClass]="getTypeClass()"><span *ngIf="false && round" class="round">{{round}}&nbsp;</span>{{elapsed|secc}}</span>
           </div>
         </div>
 
+      </div>
+    </div>
+
+    <div class="row" style="display: none;">
+      <div class="col d-flex justify-content-center">
+        <img src="/images/men.png" style="height: 80px; max-width: 100%; object-fit: constrain;"/>
       </div>
     </div>
 

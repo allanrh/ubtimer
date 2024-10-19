@@ -48,7 +48,7 @@ export class TimerComponent {
     return {
       'counter': this.timer.type != 'interval',
       'interval': this.timer.type == 'interval',
-      'rest': !this.work,
+      'rest': !this.work || (this.timer.type == 'stopwatch-multi' && this.multiIndex % 2 == 1),
       'done': this.state == 'done',
     };
   }
@@ -63,7 +63,7 @@ export class TimerComponent {
 
   private _initialize() {
     this.round = 1;
-    this.elapsed = this.timer.type == 'stopwatch' ? 0 : this.timer.time;
+    this.elapsed = 0;
     this.prep = this.timer.prep;
     this.multiIndex = 0;
   }
@@ -113,7 +113,7 @@ export class TimerComponent {
 
   public start() {
     this._initialize();
-    this.state = 'prepping';
+    this.state = 'running';//'prepping';
     this._startTimer();
   }
 
