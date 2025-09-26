@@ -45,6 +45,7 @@ export class TimerComponent implements OnInit, OnDestroy, AfterViewInit {
   
   // Clock display
   public currentTime: string = ''
+  public nextFullHour: string = ''
   
   // Hydration handling
   private isHydrated: boolean = false
@@ -252,6 +253,7 @@ export class TimerComponent implements OnInit, OnDestroy, AfterViewInit {
   public reset() {
     this._initialize()
     this.state = 'init'
+    // Clock will automatically show next full hour due to state being 'init'
   }
 
   public stop() {
@@ -310,12 +312,30 @@ export class TimerComponent implements OnInit, OnDestroy, AfterViewInit {
     if (!this.isBrowser || !this.isHydrated) return
     
     const now = new Date()
-    const hours = now.getHours().toString().padStart(2, '0')
-    const minutes = now.getMinutes().toString().padStart(2, '0')
-    const seconds = now.getSeconds().toString().padStart(2, '0')
-    const tenths = Math.floor(now.getMilliseconds() / 100).toString()
     
-    this.currentTime = `${hours}:${minutes}:${seconds}.${tenths}`
+    // If timer is not running (init state), show next full hour
+    if (this.state === 'init') {
+      this._updateNextFullHour(now)
+    } else {
+      // Timer is running, show live time
+      const hours = now.getHours().toString().padStart(2, '0')
+      const minutes = now.getMinutes().toString().padStart(2, '0')
+      const seconds = now.getSeconds().toString().padStart(2, '0')
+      const tenths = Math.floor(now.getMilliseconds() / 100).toString()
+      
+      this.currentTime = `${hours}:${minutes}:${seconds}.${tenths}`
+    }
+  }
+
+  private _updateNextFullHour(now: Date) {
+    const nextHour = new Date(now)
+    nextHour.setHours(now.getHours() + 1, 0, 0, 0) // Set to next full hour
+    
+    const hours = nextHour.getHours().toString().padStart(2, '0')
+    const minutes = nextHour.getMinutes().toString().padStart(2, '0')
+    
+    // Show static time for next full hour (always 00:00:00.0)
+    this.currentTime = `${hours}:00:00.0`
   }
 
   public getClockChars(): string[] {
