@@ -23,12 +23,15 @@
 
         <div class="timer">
           <!-- <div *ngIf="false && !running && !paused && !done"> -->
-          <div *ngIf="(init && prep > 0) || prepping">
-            <span class="prep">{{prep}}</span>
+          <div *ngIf="(init && prep > 0) || prepping" class="prep">
+            <span class="timer-char" *ngFor="let char of getPrepChars()">{{char}}</span>
           </div>
           <!-- <div class="elapsed" *ngIf="init || prep || running || paused || done"> -->
           <div class="elapsed" *ngIf="(init && prep <= 0) || running || paused || done">
-            <span [ngClass]="getTypeClass()"><span *ngIf="false && round" class="round">{{round}}&nbsp;</span>{{elapsed|secc}}</span>
+            <span [ngClass]="getTypeClass()">
+              <span *ngIf="false && round" class="round">{{round}}&nbsp;</span>
+              <span class="timer-char" *ngFor="let char of getElapsedChars()">{{char}}</span>
+            </span>
           </div>
         </div>
 
@@ -59,6 +62,13 @@
   <!-- Weights banner -->
   <div *ngIf="timer.weights" class="weights-banner">
     <img [src]="'images/' + timer.weights" alt="Weights" class="weights-image"/>
+  </div>
+
+  <!-- Clock banner -->
+  <div *ngIf="timer.clock" class="clock-banner">
+    <div class="clock-display">
+      <span class="clock-char" *ngFor="let char of getClockChars()">{{char}}</span>
+    </div>
   </div>
 
 </div>

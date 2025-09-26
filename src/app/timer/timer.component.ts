@@ -1,6 +1,6 @@
-import { Component, Input } from '@angular/core'
+import { Component, Input, Inject, PLATFORM_ID } from '@angular/core'
 import { RouterLink } from '@angular/router'
-import { CommonModule } from '@angular/common'
+import { CommonModule, isPlatformBrowser } from '@angular/common'
 
 import { StorageService } from '../storage.service'
 import { SeccPipe } from '../secc.pipe'
@@ -37,9 +37,13 @@ export class TimerComponent {
   private isInitialPrep: boolean = true
 
   private _interval: ReturnType<typeof setInterval>|null = null
+  private _clockInterval: ReturnType<typeof setInterval>|null = null
   public multiIndex: number = 0
   private startTime: number = 0
   private pausedTime: number = 0
+  
+  // Clock display
+  public currentTime: string = ''
 
   @Input({required: true})
   set id(timerId: number) {
@@ -49,7 +53,8 @@ export class TimerComponent {
   }
 
   constructor(
-    private service: StorageService
+    private service: StorageService,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) { }
 
   public getTypeClass() {
@@ -85,6 +90,11 @@ export class TimerComponent {
     this.totalHeats = this.timer.heats || 1
     this.nextHeatPrep = 0
     this.isInitialPrep = true
+    
+    // Start clock if enabled (only in browser)
+    if (this.timer.clock && isPlatformBrowser(this.platformId)) {
+      this._startClock()
+    }
   }
 
   private _tick() {
@@ -232,5 +242,50 @@ export class TimerComponent {
     }
     
     this.state = 'running' // Go directly to running since prep was already shown
+  }
+
+  private _startClock() {
+    if (!isPlatformBrowser(this.platformId)) return
+    
+    this._stopClock()
+    this._updateClock() // Initial update
+    this._clockInterval = setInterval(() => this._updateClock(), 100) // Update every 100ms for tenths of seconds
+  }
+
+  private _stopClock() {
+    if (this._clockInterval) {
+      clearInterval(this._clockInterval)
+      this._clockInterval = null
+    }
+  }
+
+  private _updateClock() {
+    if (!isPlatformBrowser(this.platformId)) return
+    
+    const now = new Date()
+    const hours = now.getHours().toString().padStart(2, '0')
+    const minutes = now.getMinutes().toString().padStart(2, '0')
+    const seconds = now.getSeconds().toString().padStart(2, '0')
+    const tenths = Math.floor(now.getMilliseconds() / 100).toString()
+    
+    this.currentTime = `${hours}:${minutes}:${seconds}.${tenths}`
+  }
+
+  public getClockChars(): string[] {
+    // Provide a fallback for SSR
+    if (!isPlatformBrowser(this.platformId)) {
+      return '00:00:00.0'.split('')
+    }
+    return this.currentTime.split('')
+  }
+
+  public getPrepChars(): string[] {
+    return this.prep.toString().split('')
+  }
+
+  public getElapsedChars(): string[] {
+    // Format elapsed time as MM:SS using the same logic as secc pipe
+    const formatted = new Date(this.elapsed * 1000).toISOString().substring(14, 19)
+    return formatted.split('')
   }
 }

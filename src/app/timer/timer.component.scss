@@ -50,12 +50,22 @@ h1 {
   line-height: 1;
   font-family: ViperNora;
   font-size: 20vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   .prep {
     color: darkorange;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .elapsed {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
     .round {
       color: darkorange;
     }
@@ -65,6 +75,17 @@ h1 {
     .done {
       color: #777;
     }
+  }
+}
+
+.timer-char {
+  display: inline-block;
+  width: 0.6em; /* Fixed width for each character */
+  text-align: center;
+  
+  /* Special handling for colons - make them narrower */
+  &:nth-child(3) {
+    width: 0.3em; /* Colon is narrower */
   }
 }
 
@@ -96,4 +117,38 @@ h1 {
   max-height: 100%;
   max-width: 100%;
   object-fit: contain;
+}
+
+.clock-banner {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 20vh; /* One fifth of viewport height */
+  background-color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.clock-display {
+  font-family: ViperNora;
+  font-size: 8vw;
+  color: darkorange;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.clock-char {
+  display: inline-block;
+  width: 0.6em; /* Fixed width for each character */
+  text-align: center;
+  
+  /* Special handling for colons and periods - make them narrower */
+  &:nth-child(3), &:nth-child(6), &:nth-child(9) {
+    width: 0.3em; /* Colons and period are narrower */
+  }
 }
