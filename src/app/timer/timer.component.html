@@ -4,7 +4,13 @@
     <div class="row">
       <div class="col d-flex">
         <a routerLink="/"><img class="logo" src="images/ub-logo.png"/></a>
-        <h1 class="heading mx-auto">{{timer.name}}</h1>
+        <div class="mx-auto text-center">
+          <h1 class="heading">{{timer.name}}</h1>
+          <div *ngIf="showHeatHeader" class="heat-header">
+            <span *ngIf="showNextHeatPrep">NEXT HEAT {{currentHeat + 1}} - {{nextHeatPrep}}</span>
+            <span *ngIf="!showNextHeatPrep">HEAT {{currentHeat}}</span>
+          </div>
+        </div>
         <img class="sponsor-logo" src="{{timer.logo}}"/>
       </div>
     </div>
@@ -38,7 +44,7 @@
     <div class="row">
       <div class="col d-flex justify-content-center">
         <div class="action-buttons">
-          <span class="debug">{{state}}, p={{prep}}, r={{round}}, m={{multiIndex}}, e={{elapsed}}</span>
+          <span class="debug">{{state}}, p={{prep}}, r={{round}}, m={{multiIndex}}, e={{elapsed}}, h={{currentHeat}}/{{totalHeats}}</span>
           <button type="button" class="btn btn-outline-dark" *ngIf="init" (click)="start()">START</button>
           <button type="button" class="btn btn-outline-dark" *ngIf="false && running" (click)="pause()">PAUSE</button>
           <button type="button" class="btn btn-outline-dark" *ngIf="paused" (click)="continue()">CONTINUE</button>

@@ -7,8 +7,9 @@
       <th scope="col">Event</th>
       <th scope="col">Logo</th>
       <th scope="col">Timer type</th>
-      <th scope="col">T-minus</th>
-      <th scope="col">Time</th>
+      <th scope="col">Heats</th>
+      <th scope="col">Countdown</th>
+      <th scope="col">Timer</th>
       <th *ngIf="false" scope="col">Rounds</th>
       <th scope="col">Work</th>
       <th scope="col">Rest</th>
@@ -20,6 +21,7 @@
       <td><a class="button" routerLink="/timer/{{timer.id}}">{{timer.name}}</a></td>
       <td>{{timer.logo}}</td>
       <td>{{timer.type}}</td>
+      <td><span *ngIf="timer.heats">{{timer.heats}}</span></td>
       <td>{{timer.prep}} sec</td>
       <td>
         <span *ngIf="timer.time">{{timer.time|secc}}</span>

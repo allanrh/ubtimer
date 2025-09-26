@@ -50,7 +50,8 @@ Kello:Tää on vähän hankalampi. Tarvis sellaisen joka on päällä ylöspäin
       { 
         id: '2025-3', 
         name: 'PIRU MERRASSA', 
-        type: 'stopwatch', prep: 10, time: 300,
+        // type: 'stopwatch', prep: 5, time: 15,
+        type: 'interval', prep: 5, work: 15, rest: 10,
         heats: 14,
         logo: 'images/league-logo.jpg', 
         weights: null,
@@ -59,7 +60,7 @@ Kello:Tää on vähän hankalampi. Tarvis sellaisen joka on päällä ylöspäin
       { 
         id: '2025-4',
         name: 'SIIVOUSPÄIVÄ', 
-        type: 'interval', prep: 0, work: 30, rest: 15,
+        type: 'interval', prep: 5, work: 30, rest: 15,
         logo: 'images/nocco-logo.jpg', 
         weights: null, // TODO
       },

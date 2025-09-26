@@ -10,12 +10,16 @@
 }
 
 h1.heading {
-  line-height: 2;
-  flex: 1;
-  text-align: center;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+  line-height: 1.5;
+  margin: 10px 0 5px 0;
+  z-index: 10;
+}
+
+.heat-header {
+  font-family: ViperNora;
+  font-size: 320%;
+  color: darkorange;
+  margin-bottom: 10px;
   z-index: 10;
 }
 

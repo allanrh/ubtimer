@@ -29,6 +29,12 @@ export class TimerComponent {
   public round: number = 1
   public elapsed: number = 0
   public prep: number = 0
+  
+  // Heat tracking
+  public currentHeat: number = 1
+  public totalHeats: number = 1
+  public nextHeatPrep: number = 0
+  private isInitialPrep: boolean = true
 
   private _interval: ReturnType<typeof setInterval>|null = null
   public multiIndex: number = 0
@@ -62,6 +68,10 @@ export class TimerComponent {
   get done() { return this.state == 'done' }
 
   get working() { return this.work }
+  
+  get hasMultipleHeats() { return this.totalHeats > 1 }
+  get showHeatHeader() { return this.hasMultipleHeats && (this.prepping || this.running || this.paused || this.done) }
+  get showNextHeatPrep() { return this.hasMultipleHeats && this.nextHeatPrep > 0 }
 
   private _initialize() {
     this.round = 1
@@ -69,6 +79,12 @@ export class TimerComponent {
     this.prep = this.timer.prep
     this.multiIndex = 0
     this.state = 'init'
+    
+    // Initialize heat tracking
+    this.currentHeat = 1
+    this.totalHeats = this.timer.heats || 1
+    this.nextHeatPrep = 0
+    this.isInitialPrep = true
   }
 
   private _tick() {
@@ -76,11 +92,23 @@ export class TimerComponent {
     const realElapsed = Math.floor((now - this.startTime) / 1000)
     
     if (this.prepping) {
-      this.prep = Math.max(0, this.timer.prep - realElapsed)
-      if (this.prep <= 0) {
-        this.state = 'running'
-        this.elapsed = 0
-        this.startTime = now // Reset start time for running phase
+      // Handle initial prep or next heat prep
+      if (this.isInitialPrep) {
+        this.prep = Math.max(0, this.timer.prep - realElapsed)
+        if (this.prep <= 0) {
+          this.state = 'running'
+          this.elapsed = 0
+          this.startTime = now // Reset start time for running phase
+          this.isInitialPrep = false
+        }
+      } else {
+        // Next heat prep countdown
+        this.nextHeatPrep = Math.max(0, this.timer.prep - realElapsed)
+        if (this.nextHeatPrep <= 0) {
+          this.state = 'running'
+          this.elapsed = 0
+          this.startTime = now // Reset start time for running phase
+        }
       }
     }
     else if (this.running) {
@@ -89,8 +117,22 @@ export class TimerComponent {
         this.elapsed = realElapsed
         
         if (this.timer.type == 'stopwatch') {
+          // Check if we should start next heat prep countdown
+          if (this.currentHeat < this.totalHeats && this.timer.prep > 0) {
+            const timeRemaining = this.timer.time - this.elapsed
+            if (timeRemaining <= this.timer.prep && timeRemaining > 0) {
+              // Start showing next heat prep countdown
+              this.nextHeatPrep = timeRemaining
+            }
+          }
+          
           if (this.elapsed >= this.timer.time) {
-            this.stop()
+            // Check if we have more heats to run
+            if (this.currentHeat < this.totalHeats) {
+              this._startNextHeat()
+            } else {
+              this.stop()
+            }
           }
 
         } else if (this.timer.type == 'stopwatch-multi') {
@@ -106,15 +148,26 @@ export class TimerComponent {
           }
 
         } else if (this.timer.type == 'interval') {
+          // Check if we should start next heat prep countdown during rest period
+          if (!this.working && this.currentHeat < this.totalHeats && this.timer.prep > 0) {
+            const restTimeRemaining = this.timer.rest - this.elapsed
+            if (restTimeRemaining <= this.timer.prep && restTimeRemaining > 0) {
+              // Start showing next heat prep countdown
+              this.nextHeatPrep = restTimeRemaining
+            }
+          }
+          
           if (this.working && this.elapsed == this.timer.work) {
             this.elapsed = 0
             this.work = false
             this.startTime = now // Reset start time for rest phase
           } else if (!this.working && this.elapsed == this.timer.rest) {
-            this.round += 1
-            this.elapsed = 0
-            this.work = true
-            this.startTime = now // Reset start time for work phase
+            // Check if we have more heats to run
+            if (this.currentHeat < this.totalHeats) {
+              this._startNextHeat()
+            } else {
+              this.stop()
+            }
           }
         }
       }
@@ -164,5 +217,20 @@ export class TimerComponent {
       clearInterval(this._interval)
       this._interval = null
     }
+  }
+
+  private _startNextHeat() {
+    this.currentHeat += 1
+    this.elapsed = 0
+    this.startTime = Date.now()
+    this.nextHeatPrep = 0 // Reset next heat prep
+    
+    if (this.timer.type == 'interval') {
+      // For interval timers, reset work/rest cycle
+      this.work = true
+      this.round = 1
+    }
+    
+    this.state = 'running' // Go directly to running since prep was already shown
   }
 }
