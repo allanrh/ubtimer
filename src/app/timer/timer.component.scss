@@ -2,6 +2,7 @@
   color: white;
   background-color: black;
   height: 100vh;
+  position: relative;
 }
 
 h1.heading {
@@ -55,4 +56,23 @@ h1 {
 .debug {
   color: #333;
   font-size: 75%;
+}
+
+.weights-banner {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 20vh; /* One fifth of viewport height */
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.weights-image {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
 }

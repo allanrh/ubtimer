@@ -16,10 +16,12 @@
       <div class="col d-flex justify-content-center">
 
         <div class="timer">
-          <div *ngIf="false && !running && !paused && !done">
+          <!-- <div *ngIf="false && !running && !paused && !done"> -->
+          <div *ngIf="(init && prep > 0) || prepping">
             <span class="prep">{{prep}}</span>
           </div>
-          <div class="elapsed" *ngIf="init || prep || running || paused || done">
+          <!-- <div class="elapsed" *ngIf="init || prep || running || paused || done"> -->
+          <div class="elapsed" *ngIf="(init && prep <= 0) || running || paused || done">
             <span [ngClass]="getTypeClass()"><span *ngIf="false && round" class="round">{{round}}&nbsp;</span>{{elapsed|secc}}</span>
           </div>
         </div>
@@ -46,6 +48,11 @@
       </div>
     </div>
 
+  </div>
+
+  <!-- Weights banner -->
+  <div *ngIf="timer.weights" class="weights-banner">
+    <img [src]="'images/' + timer.weights" alt="Weights" class="weights-image"/>
   </div>
 
 </div>

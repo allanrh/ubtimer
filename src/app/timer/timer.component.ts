@@ -66,6 +66,7 @@ export class TimerComponent {
     this.elapsed = 0;
     this.prep = this.timer.prep;
     this.multiIndex = 0;
+    this.state = 'init';
   }
 
   private _tick() {
@@ -113,7 +114,7 @@ export class TimerComponent {
 
   public start() {
     this._initialize();
-    this.state = 'running';//'prepping';
+    this.state = this.prep > 0 ? 'prepping' : 'running';
     this._startTimer();
   }
 
