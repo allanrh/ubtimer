@@ -51,15 +51,15 @@
           
           <button type="button" class="btn btn-outline-dark" *ngIf="init" (click)="start()">START</button>
           
-          <!-- Sync adjustment buttons (only when running or paused) -->
-          <button type="button" class="btn btn-outline-dark sync-btn" *ngIf="running || paused" (click)="adjustSync(-50)">
+          <!-- Sync adjustment buttons (when running, paused, or prepping) -->
+          <button type="button" class="btn btn-outline-dark sync-btn" *ngIf="running || paused || prepping" (click)="adjustSync(-50)">
             −
           </button>
-          <button type="button" class="btn btn-outline-dark sync-btn" *ngIf="running || paused" (click)="adjustSync(50)">
+          <button type="button" class="btn btn-outline-dark sync-btn" *ngIf="running || paused || prepping" (click)="adjustSync(50)">
             +
           </button>
           
-          <button type="button" class="btn btn-outline-dark" *ngIf="false && running" (click)="pause()">PAUSE</button>
+          <button type="button" class="btn btn-outline-dark" *ngIf="running" (click)="pause()">PAUSE</button>
           <button type="button" class="btn btn-outline-dark" *ngIf="paused" (click)="continue()">CONTINUE</button>
           <button type="button" class="btn btn-outline-dark" *ngIf="done" (click)="reset()">RESET</button>
           <button type="button" class="btn btn-outline-dark"  *ngIf="prepping || running || paused" (click)="stop()">STOP</button>

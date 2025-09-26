@@ -357,7 +357,7 @@ export class TimerComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public adjustSync(ms: number) {
-    if (this.running || this.paused) {
+    if (this.running || this.paused || this.prepping) {
       // Shift the start time to make the display jump forward/backward
       // Subtracting from startTime makes elapsed time increase (shift forward)
       this.startTime -= ms
