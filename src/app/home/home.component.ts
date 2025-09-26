@@ -30,4 +30,9 @@ export class HomeComponent {
   //   return this.service.getTimers();
   // }
 
+  getBaseFilename(filepath: string): string {
+    if (!filepath) return '';
+    return filepath.split('/').pop() || filepath;
+  }
+
 }
