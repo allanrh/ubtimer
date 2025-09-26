@@ -175,8 +175,14 @@ export class TimerComponent {
             // Check if we have more heats to run
             if (this.currentHeat < this.totalHeats) {
               this._startNextHeat()
-            } else {
+            } else if (this.totalHeats > 1) {
+              // Only stop if we have a specific number of heats and completed them all
               this.stop()
+            } else {
+              // For interval timers without heats parameter, cycle endlessly
+              this.elapsed = 0
+              this.work = true
+              this.startTime = now // Reset start time for next work phase
             }
           }
         }

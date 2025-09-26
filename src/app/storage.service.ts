@@ -57,13 +57,12 @@ Kello:Tää on vähän hankalampi. Tarvis sellaisen joka on päällä ylöspäin
         weights: null,
         clock: true, // HH:MM:SS.s
       },
-      { 
-        id: '2025-4',
-        name: 'SIIVOUSPÄIVÄ', 
-        type: 'interval', prep: 5, work: 30, rest: 15,
-        logo: 'images/nocco-logo.jpg', 
-        weights: null, // TODO
-      },
+      { id: '2025-4-wm2', name: 'SIIVOUSPÄIVÄ W 50 45+', type: 'interval', prep: 0, work: 5, rest: 3, logo: 'images/nocco-logo.jpg', weights: 'ub2025-e2-weights.png', },
+      { id: '2025-4-mm2', name: 'SIIVOUSPÄIVÄ M 50 45+', type: 'interval', prep: 0, work: 5, rest: 3, logo: 'images/nocco-logo.jpg', weights: 'ub2025-e2-weights.png', },
+      { id: '2025-4-wm1', name: 'SIIVOUSPÄIVÄ W 40 35+', type: 'interval', prep: 0, work: 5, rest: 3, logo: 'images/nocco-logo.jpg', weights: 'ub2025-e2-weights.png', },
+      { id: '2025-4-mm1', name: 'SIIVOUSPÄIVÄ M 40 35+', type: 'interval', prep: 0, work: 3, rest: 3, logo: 'images/nocco-logo.jpg', weights: 'ub2025-e2-weights.png', },
+      { id: '2025-4-wrx', name: 'SIIVOUSPÄIVÄ W',        type: 'interval', prep: 0, work: 5, rest: 3, logo: 'images/nocco-logo.jpg', weights: 'ub2025-e2-weights.png', },
+      { id: '2025-4-mrx', name: 'SIIVOUSPÄIVÄ M',        type: 'interval', prep: 0, work: 5, rest: 3, logo: 'images/nocco-logo.jpg', weights: 'ub2025-e2-weights.png', },
       { 
         id: '2025-5m', 
         name: 'LEGENDOJEN LOPPUNÄYTÖS', 
