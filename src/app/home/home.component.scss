@@ -7,16 +7,16 @@
 
 /* Set consistent row height for all table rows */
 #home table tbody tr {
-  height: 60px; /* Reduced height for more compact rows */
+  height: 40px; /* Very compact row height */
 }
 
 #home table tbody td {
   vertical-align: middle;
-  padding: 4px 8px; /* Reduced padding from default */
+  padding: 2px 4px; /* Minimal padding */
 }
 
 #home table thead th {
-  padding: 8px; /* Reduced header padding */
+  padding: 4px; /* Minimal header padding */
 }
 
 .logo-cell {

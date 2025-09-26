@@ -53,7 +53,7 @@ Kello:Tää on vähän hankalampi. Tarvis sellaisen joka on päällä ylöspäin
       { 
         id: '2025-3', 
         name: 'PIRU MERRASSA', 
-        type: 'interval', prep: 10, work: 60, rest: 15,
+        type: 'interval', prep: 10, work: 300, rest: 180,
         heats: 14,
         logo: 'league-logo.png', 
         weights: null,
