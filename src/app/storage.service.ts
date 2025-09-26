@@ -36,12 +36,13 @@ Kello:Tää on vähän hankalampi. Tarvis sellaisen joka on päällä ylöspäin
       
       // { id: 7, name: 'TEST', type: 'stopwatch-multi', sponsor: 'VELITES',      logo: 'images/v-logo.png', prep: 0, times: [ 5, 5, 7 ] },
 
-      { id: '2025-2', name: 'SEKAISIN TIINASTA', type: 'stopwatch', 
-        sponsor: 'OPTISHAKE', 
+      { 
+        id: '2025-2', 
+        name: 'SEKAISIN TIINASTA', 
+        type: 'stopwatch', prep: 10, time: 360,
         logo: 'images/optishake-logo-w2.jpg', 
         weights: 'ub2025-e2-weights.png',
-        prep: 10, time: 60 },
-
+      },
     ];
   }
 

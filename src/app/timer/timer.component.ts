@@ -32,6 +32,8 @@ export class TimerComponent {
 
   private _interval: ReturnType<typeof setInterval>|null = null;
   public multiIndex: number = 0
+  private startTime: number = 0;
+  private pausedTime: number = 0;
 
   @Input({required: true})
   set id(timerId: number) {
@@ -70,46 +72,53 @@ export class TimerComponent {
   }
 
   private _tick() {
+    const now = Date.now()
+    const realElapsed = Math.floor((now - this.startTime) / 1000)
+    
     if (this.prepping) {
-      this.prep -= 1;
+      this.prep = Math.max(0, this.timer.prep - realElapsed)
       if (this.prep <= 0) {
         this.state = 'running';
         this.elapsed = 0;
+        this.startTime = now // Reset start time for running phase
       }
     }
     else if (this.running) {
-
-      if (this.timer.type == 'stopwatch') {
-        this.elapsed += 1;
-        if (this.elapsed >= this.timer.time) {
-          this.stop();
-        }
-
-      } else if (this.timer.type == 'stopwatch-multi') {
-        this.elapsed += 1;
-        let t = this.timer.times[this.multiIndex];
-        if (this.elapsed >= t) {
-          if (this.multiIndex == this.timer.times.length - 1) {
+      // Only update if the second has actually changed
+      if (realElapsed !== this.elapsed) {
+        this.elapsed = realElapsed
+        
+        if (this.timer.type == 'stopwatch') {
+          if (this.elapsed >= this.timer.time) {
             this.stop();
-          } else {
-            this.multiIndex += 1;
-            this.elapsed = 0;
           }
-        }
 
-      } else if (this.timer.type == 'interval') {
-        this.elapsed += 1;
-        if (this.working && this.elapsed == this.timer.work) {
-          this.elapsed = 0;
-          this.work = false;
-        } else if (!this.working && this.elapsed == this.timer.rest) {
-          this.round += 1;
-          this.elapsed = 0;
-          this.work = true;
+        } else if (this.timer.type == 'stopwatch-multi') {
+          let t = this.timer.times[this.multiIndex];
+          if (this.elapsed >= t) {
+            if (this.multiIndex == this.timer.times.length - 1) {
+              this.stop();
+            } else {
+              this.multiIndex += 1;
+              this.elapsed = 0;
+              this.startTime = now // Reset start time for next phase
+            }
+          }
+
+        } else if (this.timer.type == 'interval') {
+          if (this.working && this.elapsed == this.timer.work) {
+            this.elapsed = 0;
+            this.work = false;
+            this.startTime = now; // Reset start time for rest phase
+          } else if (!this.working && this.elapsed == this.timer.rest) {
+            this.round += 1;
+            this.elapsed = 0;
+            this.work = true;
+            this.startTime = now; // Reset start time for work phase
+          }
         }
       }
     }
-
   }
 
   public start() {
@@ -120,10 +129,14 @@ export class TimerComponent {
 
   public pause() {
     this.state = 'paused';
+    this.pausedTime = Date.now();
   }
 
   public continue() {
-    this.state = 'continue';
+    this.state = 'running';
+    // Adjust startTime to account for pause duration
+    const pauseDuration = Date.now() - this.pausedTime;
+    this.startTime += pauseDuration;
   }
 
   public reset() {
@@ -142,7 +155,8 @@ export class TimerComponent {
 
   private _startTimer() {
     this._stopTimer();
-    this._interval = setInterval(() => this._tick(), 1000);
+    this.startTime = Date.now() - this.elapsed * 1000; // Account for current elapsed
+    this._interval = setInterval(() => this._tick(), 50); // 50ms tick for accurate second transitions
   }
 
   private _stopTimer() {
