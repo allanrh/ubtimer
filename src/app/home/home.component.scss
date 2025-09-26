@@ -5,6 +5,20 @@
   font-size: 1.5em; /* 50% bigger than default */
 }
 
+/* Set consistent row height for all table rows */
+#home table tbody tr {
+  height: 60px; /* Reduced height for more compact rows */
+}
+
+#home table tbody td {
+  vertical-align: middle;
+  padding: 4px 8px; /* Reduced padding from default */
+}
+
+#home table thead th {
+  padding: 8px; /* Reduced header padding */
+}
+
 .logo-cell {
   display: flex;
   align-items: center;
@@ -31,8 +45,8 @@
 }
 
 .weights-thumbnail {
-  width: 48px;
-  height: 48px;
+  width: 64px;
+  height: 64px;
   object-fit: contain;
   vertical-align: middle;
   margin: 0;
@@ -40,8 +54,28 @@
   display: block;
 }
 
-/* Remove padding from table cells containing images */
-td:has(.logo-thumbnail),
+/* Remove padding from table cells containing images and center them vertically */
+td:has(.logo-thumbnail) {
+  padding: 0;
+  vertical-align: middle;
+  text-align: center;
+}
+
 td:has(.weights-thumbnail) {
+  padding: 0;
+  vertical-align: middle;
+  text-align: center;
+}
+
+td:has(.clock-indicator) {
+  padding: 0;
+  vertical-align: middle;
+  text-align: left;
+}
+
+.clock-indicator {
+  font-size: 24px;
+  line-height: 1;
+  margin: 0;
   padding: 0;
 }

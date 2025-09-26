@@ -6,7 +6,7 @@
       <th scope="col">#</th>
       <th scope="col">Event</th>
       <th scope="col">Logo</th>
-      <th scope="col">Weight</th>
+      <th scope="col">Footer</th>
       <th scope="col">Timer type</th>
       <th scope="col">Heats</th>
       <th scope="col">Countdown</th>
@@ -21,10 +21,11 @@
       <th scope="row">{{timer.id}}</th>
       <td><a class="button" routerLink="/timer/{{timer.id}}">{{timer.name}}</a></td>
       <td>
-        <img *ngIf="timer.logo" [src]="timer.logo" [alt]="getBaseFilename(timer.logo)" class="logo-thumbnail">
+        <img *ngIf="timer.logo" [src]="'images/' + timer.logo" [alt]="getBaseFilename(timer.logo)" class="logo-thumbnail">
       </td>
       <td>
-        <img *ngIf="timer.weights" [src]="'images/' + timer.weights" [alt]="getBaseFilename(timer.weights)" class="weights-thumbnail">
+        <div *ngIf="timer.clock" class="clock-indicator">🕐</div>
+        <img *ngIf="timer.weights && !timer.clock" [src]="'images/' + timer.weights" [alt]="getBaseFilename(timer.weights)" class="weights-thumbnail">
       </td>
       <td>{{timer.type}}</td>
       <td><span *ngIf="timer.heats">{{timer.heats}}</span></td>
