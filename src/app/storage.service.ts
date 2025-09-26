@@ -40,6 +40,7 @@ Kello:Tää on vähän hankalampi. Tarvis sellaisen joka on päällä ylöspäin
 
       // UNBROKEN 2025
 
+      // Friday
       { 
         id: '2025-2', 
         name: 'SEKAISIN TIINASTA', 
@@ -47,6 +48,8 @@ Kello:Tää on vähän hankalampi. Tarvis sellaisen joka on päällä ylöspäin
         logo: 'optishake-logo-w2.jpg', 
         weights: 'ub2025-e2-weights.png',
       },
+      
+      // Saturday
       { 
         id: '2025-3', 
         name: 'PIRU MERRASSA', 
@@ -76,6 +79,8 @@ Kello:Tää on vähän hankalampi. Tarvis sellaisen joka on päällä ylöspäin
         type: 'stopwatch', prep: 10, time: 300,
         logo: 'wisegym-logo.png', 
       },
+
+      // Sunday
       { 
         id: '2025-6', 
         name: 'PYSSYHIIHTO', 
