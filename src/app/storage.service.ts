@@ -55,7 +55,7 @@ Kello:Tää on vähän hankalampi. Tarvis sellaisen joka on päällä ylöspäin
         name: 'PIRU MERRASSA', 
         type: 'interval', prep: 10, work: 300, rest: 180,
         heats: 14,
-        logo: 'league-logo.png', 
+        logo: 'league-logo-2.png', 
         weights: null,
         clock: true, // HH:MM:SS.s
       },
