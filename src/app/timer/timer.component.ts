@@ -1,9 +1,9 @@
-import { Component, Input } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { Component, Input } from '@angular/core'
+import { RouterLink } from '@angular/router'
+import { CommonModule } from '@angular/common'
 
 import { StorageService } from '../storage.service'
-import { SeccPipe } from '../secc.pipe';
+import { SeccPipe } from '../secc.pipe'
 
 @Component({
   selector: 'app-timer',
@@ -18,28 +18,28 @@ import { SeccPipe } from '../secc.pipe';
 })
 export class TimerComponent {
 
-  timerId: number|null = null;
-  timer: any;
+  timerId: number|null = null
+  timer: any
 
   // init prep running paused done
-  public state: string = 'init';
+  public state: string = 'init'
 
-  public work: boolean = true; // else 'rest'
+  public work: boolean = true // else 'rest'
 
-  public round: number = 1;
-  public elapsed: number = 0;
-  public prep: number = 0;
+  public round: number = 1
+  public elapsed: number = 0
+  public prep: number = 0
 
-  private _interval: ReturnType<typeof setInterval>|null = null;
+  private _interval: ReturnType<typeof setInterval>|null = null
   public multiIndex: number = 0
-  private startTime: number = 0;
-  private pausedTime: number = 0;
+  private startTime: number = 0
+  private pausedTime: number = 0
 
   @Input({required: true})
   set id(timerId: number) {
-    this.timerId = timerId;
-    this.timer = this.service.getTimer(timerId);
-    this._initialize();
+    this.timerId = timerId
+    this.timer = this.service.getTimer(timerId)
+    this._initialize()
   }
 
   constructor(
@@ -52,23 +52,23 @@ export class TimerComponent {
       'interval': this.timer.type == 'interval',
       'rest': !this.work || (this.timer.type == 'stopwatch-multi' && this.multiIndex % 2 == 1),
       'done': this.state == 'done',
-    };
+    }
   }
 
-  get init() { return this.state == 'init'; }
-  get prepping() { return this.state == 'prepping'; }
-  get running() { return this.state == 'running'; }
-  get paused() { return this.state == 'paused'; }
-  get done() { return this.state == 'done'; }
+  get init() { return this.state == 'init' }
+  get prepping() { return this.state == 'prepping' }
+  get running() { return this.state == 'running' }
+  get paused() { return this.state == 'paused' }
+  get done() { return this.state == 'done' }
 
-  get working() { return this.work; }
+  get working() { return this.work }
 
   private _initialize() {
-    this.round = 1;
-    this.elapsed = 0;
-    this.prep = this.timer.prep;
-    this.multiIndex = 0;
-    this.state = 'init';
+    this.round = 1
+    this.elapsed = 0
+    this.prep = this.timer.prep
+    this.multiIndex = 0
+    this.state = 'init'
   }
 
   private _tick() {
@@ -78,8 +78,8 @@ export class TimerComponent {
     if (this.prepping) {
       this.prep = Math.max(0, this.timer.prep - realElapsed)
       if (this.prep <= 0) {
-        this.state = 'running';
-        this.elapsed = 0;
+        this.state = 'running'
+        this.elapsed = 0
         this.startTime = now // Reset start time for running phase
       }
     }
@@ -90,31 +90,31 @@ export class TimerComponent {
         
         if (this.timer.type == 'stopwatch') {
           if (this.elapsed >= this.timer.time) {
-            this.stop();
+            this.stop()
           }
 
         } else if (this.timer.type == 'stopwatch-multi') {
-          let t = this.timer.times[this.multiIndex];
+          let t = this.timer.times[this.multiIndex]
           if (this.elapsed >= t) {
             if (this.multiIndex == this.timer.times.length - 1) {
-              this.stop();
+              this.stop()
             } else {
-              this.multiIndex += 1;
-              this.elapsed = 0;
+              this.multiIndex += 1
+              this.elapsed = 0
               this.startTime = now // Reset start time for next phase
             }
           }
 
         } else if (this.timer.type == 'interval') {
           if (this.working && this.elapsed == this.timer.work) {
-            this.elapsed = 0;
-            this.work = false;
-            this.startTime = now; // Reset start time for rest phase
+            this.elapsed = 0
+            this.work = false
+            this.startTime = now // Reset start time for rest phase
           } else if (!this.working && this.elapsed == this.timer.rest) {
-            this.round += 1;
-            this.elapsed = 0;
-            this.work = true;
-            this.startTime = now; // Reset start time for work phase
+            this.round += 1
+            this.elapsed = 0
+            this.work = true
+            this.startTime = now // Reset start time for work phase
           }
         }
       }
@@ -122,47 +122,47 @@ export class TimerComponent {
   }
 
   public start() {
-    this._initialize();
-    this.state = this.prep > 0 ? 'prepping' : 'running';
-    this._startTimer();
+    this._initialize()
+    this.state = this.prep > 0 ? 'prepping' : 'running'
+    this._startTimer()
   }
 
   public pause() {
-    this.state = 'paused';
-    this.pausedTime = Date.now();
+    this.state = 'paused'
+    this.pausedTime = Date.now()
   }
 
   public continue() {
-    this.state = 'running';
+    this.state = 'running'
     // Adjust startTime to account for pause duration
-    const pauseDuration = Date.now() - this.pausedTime;
-    this.startTime += pauseDuration;
+    const pauseDuration = Date.now() - this.pausedTime
+    this.startTime += pauseDuration
   }
 
   public reset() {
-    this._initialize();
-    this.state = 'init';
+    this._initialize()
+    this.state = 'init'
   }
 
   public stop() {
     if (this.prepping) {
-      this.reset();
+      this.reset()
     } else {
-      this.state = 'done';
-      this._stopTimer();
+      this.state = 'done'
+      this._stopTimer()
     }
   }
 
   private _startTimer() {
-    this._stopTimer();
-    this.startTime = Date.now() - this.elapsed * 1000; // Account for current elapsed
-    this._interval = setInterval(() => this._tick(), 50); // 50ms tick for accurate second transitions
+    this._stopTimer()
+    this.startTime = Date.now() - this.elapsed * 1000 // Account for current elapsed
+    this._interval = setInterval(() => this._tick(), 50) // 50ms tick for accurate second transitions
   }
 
   private _stopTimer() {
     if (this._interval) {
-      clearInterval(this._interval);
-      this._interval = null;
+      clearInterval(this._interval)
+      this._interval = null
     }
   }
 }
