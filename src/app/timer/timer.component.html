@@ -2,9 +2,9 @@
 
   <div class="container-fluid">
     <div class="row">
-      <div class="col d-flex">
+      <div class="col d-flex align-items-center">
         <a routerLink="/"><img class="logo" src="images/ub-logo.png"/></a>
-        <div class="mx-auto text-center">
+        <div class="title-container">
           <h1 class="heading">{{timer.name}}</h1>
           <div *ngIf="showHeatHeader" class="heat-header">
             <span *ngIf="showNextHeatPrep">NEXT HEAT {{currentHeat + 1}} - {{nextHeatPrep}}</span>

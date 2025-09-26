@@ -1,6 +1,7 @@
-import { Component, Input, Inject, PLATFORM_ID } from '@angular/core'
+import { Component, Input, Inject, PLATFORM_ID, OnInit, OnDestroy, AfterViewInit } from '@angular/core'
 import { RouterLink } from '@angular/router'
 import { CommonModule, isPlatformBrowser } from '@angular/common'
+import { DOCUMENT } from '@angular/common'
 
 import { StorageService } from '../storage.service'
 import { SeccPipe } from '../secc.pipe'
@@ -16,7 +17,7 @@ import { SeccPipe } from '../secc.pipe'
   templateUrl: './timer.component.html',
   styleUrl: './timer.component.scss'
 })
-export class TimerComponent {
+export class TimerComponent implements OnInit, OnDestroy, AfterViewInit {
 
   timerId: number|null = null
   timer: any
@@ -44,6 +45,10 @@ export class TimerComponent {
   
   // Clock display
   public currentTime: string = ''
+  
+  // Hydration handling
+  private isHydrated: boolean = false
+  private isBrowser: boolean = false
 
   @Input({required: true})
   set id(timerId: number) {
@@ -54,8 +59,37 @@ export class TimerComponent {
 
   constructor(
     private service: StorageService,
-    @Inject(PLATFORM_ID) private platformId: Object
-  ) { }
+    @Inject(PLATFORM_ID) private platformId: Object,
+    @Inject(DOCUMENT) private document: Document
+  ) { 
+    this.isBrowser = isPlatformBrowser(this.platformId)
+  }
+
+  ngOnInit() {
+    // Wait for hydration to complete before starting any timers
+    if (this.isBrowser) {
+      // Use a small delay to ensure hydration is complete
+      setTimeout(() => {
+        this.isHydrated = true
+        this._initializeAfterHydration()
+      }, 100)
+    }
+  }
+
+  ngAfterViewInit() {
+    // Additional safety check for hydration
+    if (this.isBrowser && !this.isHydrated) {
+      setTimeout(() => {
+        this.isHydrated = true
+        this._initializeAfterHydration()
+      }, 200)
+    }
+  }
+
+  ngOnDestroy() {
+    this._stopTimer()
+    this._stopClock()
+  }
 
   public getTypeClass() {
     return {
@@ -91,8 +125,15 @@ export class TimerComponent {
     this.nextHeatPrep = 0
     this.isInitialPrep = true
     
-    // Start clock if enabled (only in browser)
-    if (this.timer.clock && isPlatformBrowser(this.platformId)) {
+    // Don't start clock immediately - wait for hydration
+    if (this.timer.clock && this.isBrowser && this.isHydrated) {
+      this._startClock()
+    }
+  }
+
+  private _initializeAfterHydration() {
+    // Start clock if enabled and we're hydrated
+    if (this.timer && this.timer.clock && this.isBrowser && this.isHydrated) {
       this._startClock()
     }
   }
@@ -251,7 +292,7 @@ export class TimerComponent {
   }
 
   private _startClock() {
-    if (!isPlatformBrowser(this.platformId)) return
+    if (!this.isBrowser || !this.isHydrated) return
     
     this._stopClock()
     this._updateClock() // Initial update
@@ -266,7 +307,7 @@ export class TimerComponent {
   }
 
   private _updateClock() {
-    if (!isPlatformBrowser(this.platformId)) return
+    if (!this.isBrowser || !this.isHydrated) return
     
     const now = new Date()
     const hours = now.getHours().toString().padStart(2, '0')
@@ -279,7 +320,7 @@ export class TimerComponent {
 
   public getClockChars(): string[] {
     // Provide a fallback for SSR
-    if (!isPlatformBrowser(this.platformId)) {
+    if (!this.isBrowser || !this.isHydrated) {
       return '00:00:00.0'.split('')
     }
     return this.currentTime.split('')
