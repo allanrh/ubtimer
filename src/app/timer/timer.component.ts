@@ -43,6 +43,8 @@ export class TimerComponent implements OnInit, OnDestroy, AfterViewInit {
   private startTime: number = 0
   private pausedTime: number = 0
   
+  public pausingEnabled: boolean = false // pausing is currently broken so disable
+
   // Clock display
   public currentTime: string = ''
   public nextFullHour: string = ''
@@ -239,6 +241,9 @@ export class TimerComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public pause() {
+    if (!this.pausingEnabled) {
+      return
+    }
     this.state = 'paused'
     this.pausedTime = Date.now()
   }
