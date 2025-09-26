@@ -355,4 +355,12 @@ export class TimerComponent implements OnInit, OnDestroy, AfterViewInit {
     const formatted = new Date(this.elapsed * 1000).toISOString().substring(14, 19)
     return formatted.split('')
   }
+
+  public adjustSync(ms: number) {
+    if (this.running || this.paused) {
+      // Shift the start time to make the display jump forward/backward
+      // Subtracting from startTime makes elapsed time increase (shift forward)
+      this.startTime -= ms
+    }
+  }
 }
